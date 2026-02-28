@@ -1,0 +1,1 @@
+# This project uses XGBoost to predict customer spending patterns in e-commerce.
