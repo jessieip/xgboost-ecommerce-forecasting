@@ -159,13 +159,11 @@ We use `make` to standardise formatting and linting.
 
 ```makefile
 install:
-	poetry install
-
-format:
-	poetry run black . --include '\.ipynb$$|\.py$$'
-
+	poetry install --no-root
 lint:
 	poetry run nbqa flake8 . --ignore=E501
+format:
+	poetry run black .
 ```
 
 ---
