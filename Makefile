@@ -1,6 +1,6 @@
 install:
-	pip install -r requirements.txt
+	poetry install --no-root
 lint:
-	nbqa flake8 . --ignore=E501
+	poetry run nbqa flake8 . --ignore=E501
 format:
-	black . --include '\.ipynb$$'
+	poetry run black .
