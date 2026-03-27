@@ -50,7 +50,7 @@ poetry install
 This will read the `pyproject.toml` file and automatically install all dependencies like `numpy`, `pandas`, and `xgboost`.
 
 ---
-
+1
 ### 3. IDE Configuration (PyCharm)
 
 To ensure PyCharm uses the correct virtual environment, follow these steps:
