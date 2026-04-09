@@ -48,16 +48,3 @@ def prepare_data(df_input: pd.DataFrame) -> pd.DataFrame:
 
     return df_proc
 
-if __name__ == "__main__":
-    sample_data = pd.DataFrame({
-        "session_start": [pd.Timestamp("2024-01-01 10:00:00")],
-        "country": ["España"],
-        "number_of_prior_session_count": [2],
-        "past_total_spend_before_session": [100.0],
-        "session_id": ["s1"],
-        "user_id": ["u1"]
-    })
-
-    df_prepare = prepare_data(sample_data)
-    print("Test Result Columns:", df_prepare.columns.tolist())
-    print("Extractor test passed")
