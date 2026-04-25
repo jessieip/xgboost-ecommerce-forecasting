@@ -89,9 +89,7 @@ def optimise_xgboost(
     study = optuna.create_study(direction="minimize")
     study.optimize(objective, n_trials=50, show_progress_bar=True)
     return study.best_params
-    # print the best hyperparameters
-    # print('Best hyperparameters: ', study.best_params)
-    # print('Best performance: ', study.best_value)
+    
 
 
 
