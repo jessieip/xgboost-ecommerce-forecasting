@@ -33,8 +33,6 @@ def train_model(x_train: pd.DataFrame,
         tweedie_variance_power=1.7,
         early_stopping_rounds = 50
     )
-    # gamma regression
-    # model = xgb.XGBRegressor(**best_params, tree_method='hist', enable_categorical=True, objective = 'reg:gamma')
 
     model.fit(x_train, y_train, eval_set=[(x_test, y_test)], verbose=False)
 
