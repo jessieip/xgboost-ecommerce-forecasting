@@ -1,16 +1,17 @@
-import pandas as pd
+from typing import Any
+
 import numpy as np
 import optuna
-from sklearn.model_selection import train_test_split
+import pandas as pd
 import xgboost as xgb
 from sklearn.metrics import mean_absolute_error
-from typing import Tuple, Dict, Any
+from sklearn.model_selection import train_test_split
 
 
 def prepare_var(df: pd.DataFrame,
                 target: str,
                 test_size: float,
-                random_state: int) -> Tuple[pd.DataFrame,pd.Series,pd.DataFrame,pd.Series,pd.DataFrame,pd.Series]:
+                random_state: int) -> tuple[pd.DataFrame,pd.Series,pd.DataFrame,pd.Series,pd.DataFrame,pd.Series]:
     """
     split DataFrame into train, val and test sets.
     Args:
@@ -22,38 +23,38 @@ def prepare_var(df: pd.DataFrame,
          X_train, y_train, X_val, y_val, X_test, y_test
     """
     y = df[target]
-    X = df.drop([target], axis=1)
+    x = df.drop([target], axis=1)
 
-    cat_col = X.select_dtypes(exclude=np.number).columns.tolist()
+    cat_col = x.select_dtypes(exclude=np.number).columns.tolist()
 
     for col in cat_col:
-        X[col] = X[col].astype("category")
+        x[col] = x[col].astype("category")
 
     # Split to Train, Val
-    X_train_val, X_test, y_train_val, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=random_state
+    x_train_val, x_test, y_train_val, y_test = train_test_split(
+        x, y, test_size=test_size, random_state=random_state
     )
 
     # split X_train_val, y_train_val for Optuna
-    X_train, X_val, y_train, y_val = train_test_split(
-        X_train_val, y_train_val, test_size=test_size, random_state=random_state
+    x_train, x_val, y_train, y_val = train_test_split(
+        x_train_val, y_train_val, test_size=test_size, random_state=random_state
     )
 
-    return X_train, y_train, X_val, y_val, X_test, y_test
+    return x_train, y_train, x_val, y_val, x_test, y_test
 
 
 
 def optimise_xgboost(
-        X_train: pd.DataFrame,
+        x_train: pd.DataFrame,
         y_train: pd.Series,
-        X_val: pd.DataFrame,
-        y_val: pd.Series) -> Dict[str, Any]:
+        x_val: pd.DataFrame,
+        y_val: pd.Series) -> dict[str, Any]:
     """
     Using Optuna to find the best hyperparameters for xgboost model
     Args:
-        X_train: training variables
+        x_train: training variables
         y_train: training target
-        X_val: validation variables
+        x_val: validation variables
         y_val: validation target
 
     Returns: return best parameters include max_depth, learning_rate, n_estimators"
@@ -80,9 +81,9 @@ def optimise_xgboost(
 
         # reg.fit(X_train, y_train)
 
-        reg.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=False)
+        reg.fit(x_train, y_train, eval_set=[(x_val, y_val)], verbose=False)
 
-        preds = reg.predict(X_val)
+        preds = reg.predict(x_val)
         mae = mean_absolute_error(y_val, preds)
         return mae
 
