@@ -1,6 +1,8 @@
 install:
 	poetry install --no-root
 lint:
-	poetry run nbqa flake8 . --ignore=E501
+	poetry run ruff check src
 format:
 	poetry run black .
+typecheck:
+	poetry run mypy src

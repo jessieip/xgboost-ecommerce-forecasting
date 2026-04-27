@@ -1,6 +1,7 @@
 """Import libraries that is used for the model"""
-from google.cloud import bigquery
 import pandas as pd
+from google.cloud import bigquery
+
 
 def extract_data(project_id:str, query:str) -> pd.DataFrame:
     """
@@ -12,7 +13,7 @@ def extract_data(project_id:str, query:str) -> pd.DataFrame:
             past_total_spend_before_session, etc
     """
     client = bigquery.Client(project=project_id)
-    query = """ 
+    query = """
     WITH session_windows AS (
         -- Step 1: Define the start and end of every session
         SELECT
@@ -34,7 +35,7 @@ def extract_data(project_id:str, query:str) -> pd.DataFrame:
         FROM `bigquery-public-data.thelook_ecommerce.order_items`
         GROUP BY 1, 2, 3
     )
-    
+
     SELECT
         sw.session_id,
         sw.user_id,
@@ -43,7 +44,7 @@ def extract_data(project_id:str, query:str) -> pd.DataFrame:
         u.country,
         u.traffic_source,
         sw.session_start,
-    
+
         -- FEATURE: Total spend BEFORE this session started
         COALESCE((
             SELECT SUM(ot.total_value)
@@ -51,14 +52,14 @@ def extract_data(project_id:str, query:str) -> pd.DataFrame:
             WHERE ot.user_id = sw.user_id
               AND ot.created_at < sw.session_start
         ), 0) AS past_total_spend_before_session,
-    
+
         -- FEATURE: Session count prior to this one
         COUNT(*) OVER (
             PARTITION BY sw.user_id
             ORDER BY sw.session_start
             ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
         ) AS number_of_prior_session_count,
-    
+
         -- TARGET: Total spend WITHIN this session
         -- We look for orders by this user that happened between the session start and end
         COALESCE((
@@ -67,7 +68,7 @@ def extract_data(project_id:str, query:str) -> pd.DataFrame:
             WHERE ot.user_id = sw.user_id
               AND ot.created_at BETWEEN sw.session_start AND sw.session_end
         ), 0) AS label_session_spend
-    
+
     FROM session_windows sw
     JOIN `bigquery-public-data.thelook_ecommerce.users` u ON sw.user_id = u.id
     ORDER BY sw.user_id, sw.session_start
