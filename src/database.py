@@ -3,7 +3,7 @@ import pandas as pd
 from google.cloud import bigquery
 
 
-def extract_data(project_id:str, query:str) -> pd.DataFrame:
+def extract_data(project_id:str) -> pd.DataFrame:
     """
         Extracting data process via Bigquery.
         Args:
