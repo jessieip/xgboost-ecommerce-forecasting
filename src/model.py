@@ -1,4 +1,4 @@
-from typing import Any, Tuple
+from typing import Any, tuple
 
 import numpy as np
 import pandas as pd
