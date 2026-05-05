@@ -16,3 +16,6 @@ __pycache__/
 *.model
 outputs/
 
+#Secrets
+.streamlit/secrets.toml
+*.json

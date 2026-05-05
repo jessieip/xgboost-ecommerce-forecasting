@@ -1,4 +1,6 @@
 import logging
+import os
+import shutil
 
 from src.database import extract_data
 from src.extractor import prepare_data
@@ -6,19 +8,18 @@ from src.model import train_model
 from src.output import plot_residuals, save_result, shap_analysis
 from src.processing import optimise_xgboost, prepare_var
 
-import os
-import shutil
-
-# check output folder exists or not
-if os.path.exists('outputs'):
-    shutil.rmtree('outputs') #delete old folder
-os.makedirs('outputs')
-
 # setting up logging
 logging.basicConfig(level = logging.INFO, format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+def _reset_outputs_dir() -> None:
+    """Reset outputs directory before generating fresh artifacts."""
+    if os.path.exists("outputs"):
+        shutil.rmtree("outputs")
+    os.makedirs("outputs")
+
 def main() -> None:
+    _reset_outputs_dir()
 
     # 1. getting data from database
     logger.info('Extracting data from BigQuery...')

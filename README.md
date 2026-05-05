@@ -184,3 +184,19 @@ __pycache__/
 ```
 
 > 💡 Exclude data files (`*.csv`, `*.json`) only if they contain sensitive or large data.
+
+---
+
+### 8. Streamlit Frontend
+
+Run the Streamlit dashboard locally:
+
+```bash
+poetry run streamlit run src/streamlit_app.py
+```
+
+For Streamlit Community Cloud deployment:
+
+1. Set the app entrypoint to `src/streamlit_app.py`.
+2. Add a secret named `GCP_SERVICE_ACCOUNT_KEY` (service account JSON).
+3. Trigger training from the UI and download generated files from `outputs/`.
