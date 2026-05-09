@@ -188,6 +188,10 @@ __pycache__/
 ---
 
 ### 8. Streamlit Frontend
+#### 🚀 Live Dashboard
+You can access the live interactive dashboard here:
+
+👉 **[XGBoost Ecommerce Spend Forecast App](https://spend-forecasting-xgboost.streamlit.app/)**
 
 Run the Streamlit dashboard locally:
 
@@ -195,8 +199,13 @@ Run the Streamlit dashboard locally:
 poetry run streamlit run src/streamlit_app.py
 ```
 
-For Streamlit Community Cloud deployment:
+Deployment Notes:
 
-1. Set the app entrypoint to `src/streamlit_app.py`.
-2. Add a secret named `GCP_SERVICE_ACCOUNT_KEY` (service account JSON).
-3. Trigger training from the UI and download generated files from `outputs/`.
+• Cloud Platform: Streamlit Community Cloud
+
+• Entrypoint: src/streamlit_app.py
+
+• Security: Secrets management via GCP_SERVICE_ACCOUNT_KEY for BigQuery access.
+
+• Features: Trigger end-to-end training, visualize SHAP explanations, and download prediction results.
+
